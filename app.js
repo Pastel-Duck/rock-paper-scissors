@@ -1,6 +1,3 @@
-let playerScore = 0;
-let computerScore = 0;
-
 function getComputerChoice(){
     let computerSelection = Math.floor(Math.random() * 3);
     switch(computerSelection){
@@ -28,21 +25,41 @@ function getHumanChoice(){
 const humanSelection = getHumanChoice();
 const computerSelection = getComputerChoice();
 
-function playRound(humanSelection, computerSelection){
-    if(humanSelection == "rock" && computerSelection == "scissors" || humanSelection == "paper" && computerSelection == "rock" || humanSelection == "scissors" && computerSelection == "paper"){
-        return `You win! ${humanSelection} beats ${computerSelection}`;
-    }
-    else if(humanSelection == "scissors" && computerSelection == "rock" || humanSelection == "rock" && computerSelection == "paper" || humanSelection == "paper" && computerSelection == "scissors"){
-        return `You lose! ${computerSelection} beats ${humanSelection}`;
-    }
-    else if(computerSelection == humanSelection){
-        return "Draw!";
-    }
-    else{
-        return "Please select a valid input!";
-    }
-}
+function playGame(){
+    let playerScore = 0;
+    let computerScore = 0;
+    let round = 0;
 
-playRound(humanSelection, computerSelection);
+    function playRound(humanSelection, computerSelection){
+        if(humanSelection == "rock" && computerSelection == "scissors" || humanSelection == "paper" && computerSelection == "rock" || humanSelection == "scissors" && computerSelection == "paper"){
+            playerScore++
+            round++
+            console.log(`You win! ${humanSelection} beats ${computerSelection}`);
+        }
+        else if(humanSelection == "scissors" && computerSelection == "rock" || humanSelection == "rock" && computerSelection == "paper" || humanSelection == "paper" && computerSelection == "scissors"){
+            computerScore++
+            round++
+            console.log(`You lose! ${computerSelection} beats ${humanSelection}`);
+        }
+        else if(computerSelection == humanSelection){
+            round++
+            console.log("Draw!");
+        }
+        else{
+            console.log("Please select a valid input!");
+        }
+    }
 
-console.log(playRound(humanSelection, computerSelection));
+    do{
+        playRound(humanSelection, computerSelection);
+    }
+    while(round < 4);
+
+    console.log(playRound(humanSelection, computerSelection));
+    console.log(`Player Score is: ${playerScore}`);
+    console.log(`Computer Score is: ${computerScore}`);
+    console.log(computerScore);
+    console.log(round);
+};
+
+playGame();
