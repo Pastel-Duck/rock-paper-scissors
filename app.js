@@ -1,3 +1,8 @@
+let playerScore = 0;
+let computerScore = 0;
+let roundwinner = '';
+let overallWinner = '';
+
 function getComputerChoice(){
     let computerSelection = Math.floor(Math.random() * 3);
     switch(computerSelection){
@@ -10,56 +15,76 @@ function getComputerChoice(){
     }
 }
 
+let humanSelection;
+let computerSelection;
 
-function getHumanChoice(){
-    let choice = prompt("Type your choice (Rock, Paper or Scissors)").toLocaleLowerCase();
+const rock = document.querySelector('.rock');
+const paper = document.querySelector('.paper');
+const scissors = document.querySelector('.scissors');
+const score = document.querySelector('.score');
 
-    if(choice == "rock" || choice == "paper" || choice == "scissors"){
-        return choice;
-    }
-    else{
-        return alert("Please input a valid choice!");
-    }
+const p1 = document.createElement('p');
+const p2 = document.createElement('p');
+const p3 = document.createElement('p');
+const p4 = document.createElement('p');
+const p5 = document.createElement('p');
+
+function playRound(humanSelection, computerSelection){
+    if(humanSelection == "rock" && computerSelection == "scissors" ||
+        humanSelection == "paper" && computerSelection == "rock" ||
+        humanSelection == "scissors" && computerSelection == "paper"){
+        playerScore++
+        roundwinner = 'You win!';
+    };
+    if(humanSelection == "scissors" && computerSelection == "rock" ||
+        humanSelection == "rock" && computerSelection == "paper" ||
+        humanSelection == "paper" && computerSelection == "scissors"){
+        computerScore++
+        roundwinner = 'You lose!';
+    };
+    if(computerSelection == humanSelection){
+        roundwinner = 'none';
+    };
+    if(playerScore == 5){
+        overallWinner = 'Player!';
+        score.appendChild(p4).innerHTML = 'Overall Winner: ' + overallWinner;
+    };
+    if(computerScore == 5){
+        overallWinner = 'Computer!';
+        score.appendChild(p4).innerHTML = 'Overall Winner: ' + overallWinner;
+    };
+    if(playerScore == 5 || computerScore == 5){
+        p1.style.display = 'none';
+        p2.style.display = 'none';
+        p3.style.display = 'none';
+
+        document.getElementsByClassName('rock').disable = true;
+        document.getElementsByClassName('paper').disable = true;
+        document.getElementsByClassName('scissors').disable = true;
+
+        score.appendChild(p5).innerHTML = 'Reload the page to restart the game';
+    };
 };
 
-const humanSelection = getHumanChoice();
-const computerSelection = getComputerChoice();
+function game(){
+    playRound(humanSelection, computerSelection);
+        score.appendChild(p1).innerHTML = 'Player Score: ' + playerScore;
+        score.appendChild(p2).innerHTML = 'Computer Score: ' + computerScore;
+        score.appendChild(p3).innerHTML = 'Round Winner: ' + roundwinner;
+    };
 
-function playGame(){
-    let playerScore = 0;
-    let computerScore = 0;
-    let round = 0;
-
-    function playRound(humanSelection, computerSelection){
-        if(humanSelection == "rock" && computerSelection == "scissors" || humanSelection == "paper" && computerSelection == "rock" || humanSelection == "scissors" && computerSelection == "paper"){
-            playerScore++
-            round++
-            console.log(`You win! ${humanSelection} beats ${computerSelection}`);
-        }
-        else if(humanSelection == "scissors" && computerSelection == "rock" || humanSelection == "rock" && computerSelection == "paper" || humanSelection == "paper" && computerSelection == "scissors"){
-            computerScore++
-            round++
-            console.log(`You lose! ${computerSelection} beats ${humanSelection}`);
-        }
-        else if(computerSelection == humanSelection){
-            round++
-            console.log("Draw!");
-        }
-        else{
-            console.log("Please select a valid input!");
-        }
-    }
-
-    do{
-        playRound(humanSelection, computerSelection);
-    }
-    while(round < 4);
-
-    console.log(playRound(humanSelection, computerSelection));
-    console.log(`Player Score is: ${playerScore}`);
-    console.log(`Computer Score is: ${computerScore}`);
-    console.log(computerScore);
-    console.log(round);
-};
-
-playGame();
+    rock.addEventListener('click', e =>{
+        computerSelection = getComputerChoice();
+        humanSelection = 'rock';
+        game();
+    });
+    paper.addEventListener('click', e =>{
+        computerSelection = getComputerChoice();
+        humanSelection = 'paper';
+        game();
+    });
+    scissors.addEventListener('click', e =>{
+        computerSelection = getComputerChoice();
+        humanSelection = 'scissors';
+        game();
+    });
